@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mohabid <mohabid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 06:31:59 by mohabid           #+#    #+#             */
-/*   Updated: 2024/12/02 05:22:11 by mohabid          ###   ########.fr       */
+/*   Created: 2024/12/02 02:36:08 by mohabid           #+#    #+#             */
+/*   Updated: 2024/12/02 05:58:48 by mohabid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*read_to_buffer(int fd, char **buffer)
 {
@@ -42,15 +42,15 @@ static char	*read_to_buffer(int fd, char **buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[_SC_OPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647)
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE > 2147483647)
 		return (NULL);
-	buffer = read_to_buffer(fd, &buffer);
+	buffer[fd] = read_to_buffer(fd, &buffer[fd]);
 	if (!buffer)
 		return (NULL);
-	line = extract_line(buffer);
-	buffer = new_line(buffer);
+	line = extract_line(buffer[fd]);
+	buffer[fd] = new_line(buffer[fd]);
 	return (line);
 }
