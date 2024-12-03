@@ -6,7 +6,7 @@
 /*   By: mohabid <mohabid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 00:11:15 by mohabid           #+#    #+#             */
-/*   Updated: 2024/12/02 05:33:50 by mohabid          ###   ########.fr       */
+/*   Updated: 2024/12/03 02:29:46 by mohabid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 3
+# endif
+
+# ifndef MAX
+#  define MAX 1024
 # endif
 
 # include <fcntl.h>

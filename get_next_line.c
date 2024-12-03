@@ -6,55 +6,62 @@
 /*   By: mohabid <mohabid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:31:59 by mohabid           #+#    #+#             */
-/*   Updated: 2024/12/02 05:22:11 by mohabid          ###   ########.fr       */
+/*   Updated: 2024/12/03 02:26:25 by mohabid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char *read_from_fd(int fd) {
-    char *temp = (char *)malloc(BUFFER_SIZE + 1);
-    if (!temp)
-        return NULL;
+static char	*read_from_fd(int fd)
+{
+	char	*temp;
+	int		bytes_read;
 
-    int bytes_read = read(fd, temp, BUFFER_SIZE);
-    if (bytes_read == -1) {
-        free(temp);
-        return NULL;
-    }
-
-    temp[bytes_read] = '\0';
-    return temp;
+	temp = (char *)malloc(BUFFER_SIZE + 1);
+	if (!temp)
+		return (NULL);
+	bytes_read = read(fd, temp, BUFFER_SIZE);
+	if (bytes_read == -1)
+	{
+		free(temp);
+		return (NULL);
+	}
+	temp[bytes_read] = '\0';
+	return (temp);
 }
 
-static char *update_buffer(char **buffer, char *temp) {
-    char *new_buffer = ft_strjoin(*buffer, temp);
-    free(*buffer);
-    *buffer = new_buffer;
-    return *buffer;
+static char	*update_buffer(char **buffer, char *temp)
+{
+	char	*new_buffer;
+
+	new_buffer = ft_strjoin(*buffer, temp);
+	free(*buffer);
+	*buffer = new_buffer;
+	return (*buffer);
 }
 
-static char *read_to_buffer(int fd, char **buffer) {
-    char *temp;
+static char	*read_to_buffer(int fd, char **buffer)
+{
+	char	*temp;
 
-    while (!ft_strchr(*buffer, '\n')) {
-        temp = read_from_fd(fd);
-        if (!temp) {
-            free(*buffer);
-            *buffer = NULL;
-            return NULL;
-        }
-
-        if (*temp == '\0') {
-            free(temp);
-            break;
-        }
-
-        update_buffer(buffer, temp);
-        free(temp);
-    }
-
-    return *buffer;
+	while (!ft_strchr(*buffer, '\n'))
+	{
+		temp = read_from_fd(fd);
+		if (!temp)
+		{
+			free(*buffer);
+			*buffer = NULL;
+			return (NULL);
+		}
+		if (*temp == '\0')
+		{
+			free(temp);
+			break ;
+		}
+		update_buffer(buffer, temp);
+		free(temp);
+	}
+	return (*buffer);
 }
 
 char	*get_next_line(int fd)
